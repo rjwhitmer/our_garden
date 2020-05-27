@@ -1,3 +1,7 @@
+Plant.destroy_all
+Garden.destroy_all
+Gardener.destroy_all
+
 cucumber = Plant.create ({
     name: "cucumber", 
     days_to_harvest: 60
@@ -25,4 +29,6 @@ bob = Gardener.create ({
     years_experience: 106
 })
 
-community_garden = Garden.create
+community_garden = Garden.create({
+    name: "Flatiron Garden",
+})

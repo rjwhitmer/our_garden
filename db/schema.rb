@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_05_26_213024) do
+ActiveRecord::Schema.define(version: 2020_05_27_225902) do
 
   create_table "gardeners", force: :cascade do |t|
     t.text "name"
@@ -19,10 +19,11 @@ ActiveRecord::Schema.define(version: 2020_05_26_213024) do
   end
 
   create_table "gardens", force: :cascade do |t|
-    t.integer "gardener_id"
-    t.integer "plant_id"
-    t.index ["gardener_id"], name: "index_gardens_on_gardener_id"
-    t.index ["plant_id"], name: "index_gardens_on_plant_id"
+    t.integer "gardeners_id"
+    t.integer "plants_id"
+    t.text "name"
+    t.index ["gardeners_id"], name: "index_gardens_on_gardeners_id"
+    t.index ["plants_id"], name: "index_gardens_on_plants_id"
   end
 
   create_table "plants", force: :cascade do |t|

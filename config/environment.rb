@@ -3,5 +3,5 @@ require 'pry'
 Bundler.require
 require_all 'lib'
 ActiveRecord::Base
-
-binding.pry
+ActiveRecord::Base.logger = nil
+# binding.pry
