@@ -14,13 +14,20 @@ class Garden < ActiveRecord::Base
     belongs_to :gardener
     belongs_to :plant
 
-    # attr_accessor :is_watered
+    attr_accessor :is_watered
+    
+    @is_watered = false
 
-    # def initialize
-    #     @is_watered = false
-    # end
+    def water_the_garden
+        @is_watered = true
+    end
 
-    # def has_water
-    #     @is_watered
-    # end
+    def has_water
+        if @is_watered
+            return "Garden has plenty of water!"
+        else
+            return "This garden is dying of thirst!"
+        end
+    end
+
 end

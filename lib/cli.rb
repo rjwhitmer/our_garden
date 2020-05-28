@@ -36,6 +36,7 @@ class Cli
         puts "1. Add a plant to the garden."
         puts "2. Water the garden."
         puts "3. Harvest a plant."
+        puts "4. Start over."
         
         menu_choice = gets.chomp.to_i
 
@@ -45,7 +46,8 @@ class Cli
             water_garden
         elsif menu_choice == 3
             harvest_vegetable
-
+        elsif menu_choice == 4
+            start_over
         else
             puts "Can't do that. Try again!"
             main_menu
@@ -62,9 +64,26 @@ class Cli
     end
 
     def water_garden
-       Garden.all.each do |gardens|
+       gardens = Garden.all.each do |gardens|
             puts gardens.name
        end
+
+       puts "Which garden would you like to water?"
+       garden_to_water = gets.chomp
+
+       gardens.each do |garden|
+        if garden.name == garden_to_water
+            puts garden.has_water
+            binding.pry
+            puts "Water this garden? y/n"
+                answer = gets.chomp
+                if answer == "y"
+                    garden.water_the_garden
+                else
+                    water_garden
+                end
+            end
+        end
        main_menu
     end
 
@@ -74,5 +93,12 @@ class Cli
         end
         main_menu
     end
+
+    def start_over
+        Garden.destroy_all
+        main_menu
+    end
+
+        
     
 end

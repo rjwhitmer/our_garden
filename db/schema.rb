@@ -31,4 +31,6 @@ ActiveRecord::Schema.define(version: 2020_05_27_225902) do
     t.integer "days_to_harvest"
   end
 
+  add_foreign_key "gardens", "gardeners", column: "gardeners_id"
+  add_foreign_key "gardens", "plants", column: "plants_id"
 end

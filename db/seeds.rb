@@ -30,5 +30,7 @@ bob = Gardener.create ({
 })
 
 community_garden = Garden.create({
-    name: "Flatiron Garden",
+    gardeners_id: Gardener.all.ids,
+    plants_id: Plant.all.ids,
+    name: "Flatiron Garden"
 })
