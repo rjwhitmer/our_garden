@@ -11,6 +11,12 @@ class Cli
         end
     end
 
+    def current_user
+        Gardener.all.select do |gardeners|
+            gardeners.name == @user
+        end
+    end
+
     def new_gardener
         puts "Looks like you're new around here. Mind giving us some details?"
         puts "How old are you?"
@@ -34,19 +40,23 @@ class Cli
         puts "What would you like to do?"
         puts ""
         puts "1. Add a plant to the garden."
-        puts "2. Water the garden."
-        puts "3. Harvest a plant."
-        puts "4. Start over."
+        puts "2. What's in my garden?"
+        puts "3. Water my plants."
+        puts "4. Harvest my plants."
+        puts "5. Start over."
         
         menu_choice = gets.chomp.to_i
 
         if menu_choice == 1
             plant_choices
         elsif menu_choice == 2
-            water_garden
+            my_garden
         elsif menu_choice == 3
-            harvest_vegetable
+            water_garden
         elsif menu_choice == 4
+            days_until_harvest
+            # harvest_vegetable
+        elsif menu_choice == 5    
             start_over
         else
             puts "Can't do that. Try again!"
@@ -57,8 +67,25 @@ class Cli
 
     def plant_choices
         puts "Which vegetable would you like to plant?"
-        Plant.all.each do |plants|
+        available_plants = Plant.all.each do |plants|
             puts plants.name
+        end
+        choice = gets.chomp
+
+        chosen_plant = available_plants.select do |plants|
+            plants.name == choice
+        end
+
+        current_user.first.plants << chosen_plant
+        # binding.pry
+
+        main_menu
+    end
+
+    def my_garden
+        # binding.pry
+        current_user.first.plants.each do |plant|
+            puts plant.name
         end
         main_menu
     end
@@ -87,10 +114,28 @@ class Cli
        main_menu
     end
 
-    def harvest_vegetable
-        Plant.all.each do |plants|
-            puts plants.name
+    def days_until_harvest
+        if current_user.first.plants.any?
+            puts "Your plants have this amount of time until harvest:"
+            puts ""
+            current_user.first.plants.each do |plant|
+                puts  "#{plant.name.capitalize} has #{plant.days_to_harvest} days until harvest"
+            end
+            harvest_vegetable
+        else
+            puts "You have nothing in your garden!"
         end
+        main_menu
+    end
+
+    def harvest_vegetable
+        puts "Which vegetable would you like to harvest?"
+        vegetables_to_harvest = current_user.first.plants.select do |plant|
+            plant.name
+        end.uniq
+        vegetables_to_harvest
+        binding.pry
+        harvested_vegetable = gets.chomp
         main_menu
     end
 

@@ -29,8 +29,14 @@ bob = Gardener.create ({
     years_experience: 106
 })
 
-community_garden = Garden.create({
-    gardeners_id: Gardener.all.ids,
-    plants_id: Plant.all.ids,
-    name: "Flatiron Garden"
-})
+# community_garden = Garden.create({
+#     gardeners_id: Gardener.first.id,
+#     plants_id: Plant.first.id,
+#     name: "Flatiron Garden"
+# })
+
+# community_garden2 = Garden.create({
+#     gardeners_id: Gardener.last.id,
+#     plants_id: Plant.last.id,
+#     name: "Flatiron Garden"
+# })

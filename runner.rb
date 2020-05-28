@@ -1,6 +1,6 @@
 require_relative 'config/environment'
 
-# binding.pry
+binding.pry
 app = Cli.new
 # app.welcome
 
