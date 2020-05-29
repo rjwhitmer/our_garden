@@ -83,10 +83,21 @@ class Cli
     end
 
     def my_garden
-        # binding.pry
-        current_user.first.plants.each do |plant|
-            puts plant.name
+        puts "Hi #{@user}! Here's what you currently have in your garden!"
+        current_user_plants = current_user.first.plants.map do |plant|
+            plant.name
         end
+        total_plants = current_user_plants.reduce({}) do |sum, plant_object|
+            sum.merge({plant_object => (sum[plant_object] || 0) + 1})
+        end
+        total_plants.each do |plant_name, count|
+            if count > 1
+                puts "You have #{count} #{plant_name} plants."
+            else
+                puts "You have #{count} #{plant_name} plant."
+            end
+        end
+        # binding.pry
         main_menu
     end
 
@@ -129,13 +140,19 @@ class Cli
     end
 
     def harvest_vegetable
+        garden_plants = []
         puts "Which vegetable would you like to harvest?"
         vegetables_to_harvest = current_user.first.plants.select do |plant|
             plant.name
         end.uniq
         vegetables_to_harvest
-        binding.pry
         harvested_vegetable = gets.chomp
+        current_user.first.plants.map do |plant|
+             if plant.name != harvested_vegetable
+                garden_plants << plant
+             end
+        end
+        current_user.first.plants = garden_plants
         main_menu
     end
 
