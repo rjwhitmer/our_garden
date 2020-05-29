@@ -44,27 +44,29 @@ def has_plants
             current_user_plants = current_user.first.plants.map do |plant|
                 plant.name
             end
+
             total_plants = current_user_plants.reduce({}) do |sum, plant_object|
                 sum.merge({plant_object => (sum[plant_object] || 0) + 1})
             end
+
             total_plants.each do |plant_name, count|
                 if count > 1
                     puts "You have #{count} #{plant_name} plants."
                 else
                     puts "You have #{count} #{plant_name} plant."
                 end
-        end
-  end
+            end
+end
 ```
 
 Shows how long the plants have until harvest:
 ```ruby
 def can_harvest
-        puts "Your plants have this amount of time until harvest:"
-        puts ""
-        current_user.first.plants.each do |plant|
-            puts  "#{plant.name.capitalize} has #{plant.days_to_harvest} days until harvest"
-        end
+    puts "Your plants have this amount of time until harvest:"
+    puts ""
+    current_user.first.plants.each do |plant|
+        puts  "#{plant.name.capitalize} has #{plant.days_to_harvest} days until harvest"
+    end
     harvest_vegetable
 end
 ```
