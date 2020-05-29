@@ -33,8 +33,7 @@ Our Flatiron Garden is a CLI application that allows users to create a garden, p
 ## Setup
 
 To run this project, install it locally by cloning the GitHub repository and typing:
-```ruby runner.rb
-```
+```ruby runner.rb```
 
 ## Code Examples
 
