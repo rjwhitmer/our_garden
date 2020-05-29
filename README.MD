@@ -20,7 +20,7 @@ Our Flatiron Garden is a CLI application that allows users to create a garden, p
 
 ## Intro Video
 
-[Demo Video to come](https://link_to_come)
+[Mod 1 Flatiron Project by Bob Whitmer and Lynn Amsbury](https://www.youtube.com/watch?v=IildNMZANqg&feature=youtu.be)
 
 ## Technologies
 
