@@ -34,9 +34,3 @@ community_garden = Garden.create({
     plant_id: Plant.first.id,
     name: "Flatiron Garden"
 })
-
-# community_garden2 = Garden.create({
-#     gardeners_id: Gardener.last.id,
-#     plants_id: Plant.last.id,
-#     name: "Flatiron Garden"
-# })

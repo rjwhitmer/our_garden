@@ -2,7 +2,8 @@ class Cli
 
     def initialize
         puts "Can you tell us your name?"
-        @user = gets.chomp
+        @user = gets.capitalize.chomp
+        @is_watered = false
 
         if Gardener.find_by name: @user
             welcome
@@ -23,7 +24,6 @@ class Cli
         age = gets.chomp.to_i
         puts "How many years have you been gardening?"
         years_experience = gets.chomp.to_i
-        # binding.pry
         Gardener.create ({
             name: @user, 
             age: age, 
@@ -37,32 +37,36 @@ class Cli
     end
 
     def main_menu
+        puts ""
         puts "What would you like to do?"
         puts ""
         puts "1. Add a plant to the garden."
         puts "2. What's in my garden?"
         puts "3. Water my plants."
         puts "4. Harvest my plants."
-        puts "5. Start over."
+        puts "5. Exit the garden."
+        puts "6. Clear the garden."
         
         menu_choice = gets.chomp.to_i
+        puts ""
 
         if menu_choice == 1
             plant_choices
         elsif menu_choice == 2
             my_garden
         elsif menu_choice == 3
-            water_garden
+            has_water
         elsif menu_choice == 4
             days_until_harvest
-            # harvest_vegetable
         elsif menu_choice == 5    
+            puts "Thanks for visiting!"
+            return
+        elsif menu_choice == 6    
             start_over
         else
             puts "Can't do that. Try again!"
             main_menu
         end
-        # binding.pry
     end
 
     def plant_choices
@@ -70,73 +74,74 @@ class Cli
         available_plants = Plant.all.each do |plants|
             puts plants.name
         end
+
         choice = gets.chomp
 
-        chosen_plant = available_plants.select do |plants|
-            plants.name == choice
+        if plant_names.include? choice
+            chosen_plant = available_plants.select do |plants|
+                plants.name == choice
+            end
+        else
+            puts ""
+            puts "Not an available plant. Try again."
+            puts ""
+            plant_choices
         end
 
         current_user.first.plants << chosen_plant
-        # binding.pry
 
         main_menu
+    end
+
+    def plant_names
+        Plant.all.map do |plants|
+            plants.name
+        end
     end
 
     def my_garden
-        puts "Hi #{@user}! Here's what you currently have in your garden!"
-        current_user_plants = current_user.first.plants.map do |plant|
-            plant.name
+        if current_user.first.plants.any?
+            has_plants
+        else
+            puts "Looks pretty empty. Maybe add some plants?"
+            puts ""
         end
-        total_plants = current_user_plants.reduce({}) do |sum, plant_object|
-            sum.merge({plant_object => (sum[plant_object] || 0) + 1})
-        end
-        total_plants.each do |plant_name, count|
-            if count > 1
-                puts "You have #{count} #{plant_name} plants."
-            else
-                puts "You have #{count} #{plant_name} plant."
-            end
-        end
-        # binding.pry
         main_menu
     end
 
-    def water_garden
-       gardens = Garden.all.each do |gardens|
-            puts gardens.name
-       end
-
-       puts "Which garden would you like to water?"
-       garden_to_water = gets.chomp
-
-       gardens.each do |garden|
-        if garden.name == garden_to_water
-            puts garden.has_water
-            binding.pry
-            puts "Water this garden? y/n"
-                answer = gets.chomp
-                if answer == "y"
-                    garden.water_the_garden
+    def has_plants
+        puts "Hi #{@user}! Here's what you currently have in your garden!"
+            current_user_plants = current_user.first.plants.map do |plant|
+                plant.name
+            end
+            total_plants = current_user_plants.reduce({}) do |sum, plant_object|
+                sum.merge({plant_object => (sum[plant_object] || 0) + 1})
+            end
+            total_plants.each do |plant_name, count|
+                if count > 1
+                    puts "You have #{count} #{plant_name} plants."
                 else
-                    water_garden
+                    puts "You have #{count} #{plant_name} plant."
                 end
             end
-        end
-       main_menu
     end
 
     def days_until_harvest
         if current_user.first.plants.any?
-            puts "Your plants have this amount of time until harvest:"
-            puts ""
-            current_user.first.plants.each do |plant|
-                puts  "#{plant.name.capitalize} has #{plant.days_to_harvest} days until harvest"
-            end
-            harvest_vegetable
+           can_harvest
         else
             puts "You have nothing in your garden!"
         end
         main_menu
+    end
+
+    def can_harvest
+        puts "Your plants have this amount of time until harvest:"
+        puts ""
+        current_user.first.plants.each do |plant|
+            puts  "#{plant.name.capitalize} has #{plant.days_to_harvest} days until harvest"
+        end
+        harvest_vegetable
     end
 
     def harvest_vegetable
@@ -152,15 +157,37 @@ class Cli
                 garden_plants << plant
              end
         end
+        puts "#{harvested_vegetable}! YUMMY!"
+        puts ""
         current_user.first.plants = garden_plants
         main_menu
     end
 
-    def start_over
-        Garden.destroy_all
+    def water_the_garden
+        @is_watered = true
+    end
+
+    def has_water
+        if @is_watered
+            puts "Garden has plenty of water!"
+        else
+            puts "This garden is dying of thirst!"
+            water_the_garden
+        end
         main_menu
     end
 
-        
-    
+    def start_over
+        puts "Are you sure you want to clear the WHOLE garden? y/n"
+        answer = gets.chomp
+        if answer == "y"
+            Garden.destroy_all
+        elsif answer == "n"
+            puts "Phew... That was a close one!"
+        else
+            puts "Not a valid response. Could you try again?"
+            start_over
+        end
+        main_menu
+    end 
 end

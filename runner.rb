@@ -1,7 +1,9 @@
 require_relative 'config/environment'
+require_relative 'lib/models/welcome_banner.rb'
 
-# binding.pry
+
+welcome_banner
+
 app = Cli.new
-# app.welcome
 
 app.main_menu
