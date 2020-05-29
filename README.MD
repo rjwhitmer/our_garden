@@ -74,7 +74,7 @@ end
 ## Features
 
 * Creates new gardeners
-* Allows a new gardener to plant new plants
+* Allows a gardener to plant new plants
 * Allows gardeners to see the plants growing in their garden
 * Allows gardeners to water the garden
 * Allows gardeners to harvest their plants
