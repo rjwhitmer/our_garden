@@ -33,15 +33,9 @@ Our Flatiron Garden is a CLI application that allows users to create a garden, p
 ## Setup
 
 To run this project, install it locally by cloning the GitHub repository and typing:
-```ruby
-bundle install
-```
-into your terminal while in the root.
+```bundle install```into your terminal while in the root.
 Then, to get the program running while in the project directory, type
-```ruby
-ruby runner.rb
-```
-into your terminal while in the root.
+```ruby runner.rb```into your terminal while in the root.
 
 ## Code Examples
 
